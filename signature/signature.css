@@ -197,7 +197,7 @@ h3 { font: 600 1rem/1.3 var(--body); }
 .amplop figcaption { font-size: .8125rem; color: var(--soft); margin-top: 8px; }
 .amplop figcaption.hand { font-size: 1.5rem; color: var(--pen); transform: rotate(-2deg); margin-top: 6px; }
 .amplop__real { width: 62%; }
-.amplop__close { font-family: var(--display); font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.12; color: var(--ox); max-width: 18em; }
+.amplop__close { font-family: var(--display); font-size: clamp(1.45rem, 2.7vw, 2.3rem); line-height: 1.15; color: var(--ox); max-width: 24em; }
 @media (min-width: 900px) {
   .amplop__photos { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 0; align-items: start; }
   .amplop__dining { grid-column: 5 / 13; grid-row: 1; margin-right: calc(var(--gut) * -1); }
@@ -208,14 +208,14 @@ h3 { font: 600 1rem/1.3 var(--body); }
 /* ============ KEBIASAAN ============ */
 .habits { background: var(--blush); }
 .habits h2 { font-size: clamp(2.5rem, 6.4vw, 5.6rem); color: var(--ox); max-width: 12em; }
-.habits__grid { margin-top: clamp(40px, 6vw, 90px); display: grid; gap: 26px; }
+.habits__grid { margin-top: clamp(36px, 5vw, 72px); display: grid; gap: 26px; }
 .habit__text h3 { font-family: var(--display); font-weight: 400; font-size: 1.7rem; line-height: 1.1; color: var(--ox); margin-bottom: 8px; }
 .habit__text { max-width: 26rem; }
 .habit figcaption { font-size: 1.5rem; color: var(--pen); margin-top: 6px; transform: rotate(-1.5deg); }
 .habit--street { width: 82%; }
 .habit--shadow { width: 48%; margin-left: auto; outline: 8px solid var(--blush); position: relative; }
 .habit--books { width: 70%; }
-.habits__bridge { margin-top: clamp(48px, 7vw, 100px); font-family: var(--display); font-size: clamp(1.6rem, 3.3vw, 2.8rem); line-height: 1.15; color: var(--ox); max-width: 19em; }
+.habits__bridge { margin-top: clamp(20px, 2.4vw, 32px); font-family: var(--display); font-size: clamp(1.4rem, 2.3vw, 2.1rem); line-height: 1.25; color: var(--ox); max-width: 30em; }
 @media (min-width: 900px) {
   .habits__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 0; }
   .habit--street { grid-column: 1 / 6; grid-row: 1 / 4; width: 100%; }
@@ -225,7 +225,6 @@ h3 { font: 600 1rem/1.3 var(--body); }
   .habit--books { grid-column: 9 / 13; grid-row: 2 / 5; width: 100%; margin-top: 40px; }
   .habit__text--books { grid-column: 9 / 13; grid-row: 5; margin-top: 44px; }
   .habit__text--early { grid-column: 2 / 6; grid-row: 4 / 6; margin-top: 64px; }
-  .habits__bridge { margin-left: calc((100% - 11 * 24px) / 12 * 3 + 72px); }
 }
 
 /* ============ MEJAMU ============ */
@@ -357,7 +356,7 @@ h3 { font: 600 1rem/1.3 var(--body); }
 
 /* ============ KURSI ============ */
 .chair { background: var(--ox); color: var(--paper); }
-.chair h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); color: var(--blush); max-width: 11em; }
+.chair h2 { font-size: clamp(2.6rem, 6.4vw, 5.4rem); color: var(--blush); max-width: 11em; }
 .chair__grid { margin-top: clamp(36px, 5vw, 70px); display: grid; gap: 30px; }
 .chair__text { max-width: 28rem; font-size: 1.1875rem; }
 .chair__saved { margin-top: 22px; font-size: 1.7rem; color: var(--blush); transform: rotate(-1.5deg); }

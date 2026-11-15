@@ -61,10 +61,10 @@
       li.classList.toggle('is-new', show && key === changed);
     });
     sum.textContent = on.length === 1
-      ? 'Meja untuk satu orang. Paling sederhana, dan paling sering ditunda.'
+      ? 'Meja untuk satu orang memang paling sederhana, dan justru karena itu paling sering ditunda.'
       : on.length <= 3
-        ? 'Meja yang sedang tumbuh. Biasanya di titik ini orang mulai bertanya.'
-        : 'Meja ramai. Kita urutkan pelan-pelan, satu kursi sekali waktu.';
+        ? 'Mejamu mulai ramai. Biasanya di tahap inilah orang mulai bertanya-tanya apakah persiapannya sudah cukup.'
+        : 'Mejamu cukup ramai, jadi kita bahas pelan-pelan, satu orang dulu baru yang berikutnya.';
     $('#save-status').textContent = '';
   }
   boxes.forEach(function (b) { b.addEventListener('change', function () { renderTable(b.getAttribute('data-seat')); }); });
@@ -85,8 +85,8 @@
     if (savedTable) {
       var others = savedTable.filter(function (k) { return k !== 'kamu'; }).map(function (k) { return seatNames[k]; });
       msg += others.length
-        ? ' Di meja saya ada saya, ' + joinId(others) + '.'
-        : ' Di meja saya baru ada saya sendiri.';
+        ? ' Yang duduk di meja saya: saya, ' + joinId(others) + '.'
+        : ' Untuk sekarang, saya masih sendiri di meja ini.';
       var qs = $$('#notes li').filter(function (li) { return !li.hidden; }).map(function (li) { return '- ' + li.textContent; });
       msg += '\n\nPertanyaan yang Nara catat untuk meja saya:\n' + qs.join('\n');
     }
@@ -101,7 +101,7 @@
     line.textContent = 'Mejamu sudah saya catat: kamu' + (others.length ? ', ' + joinId(others) : ' sendiri') + '.';
     line.hidden = false;
     touched = false; composeMsg();
-    $('#save-status').innerHTML = 'Tersimpan. Catatan ini ikut ke <a href="#kursi">pesan di halaman terakhir</a>.';
+    $('#save-status').innerHTML = 'Sudah saya simpan. Catatan ini akan ikut masuk ke <a href="#kursi">pesan di bagian terakhir</a>.';
   });
 
   /* ---------- tiga meja (tabs) ---------- */
@@ -128,7 +128,7 @@
   });
   selectCase(ctabs[0]);
 
-  /* ---------- kursi kosong: simulated message ---------- */
+  /* ---------- ngobrol: simulated message ---------- */
   $('#compose').addEventListener('submit', function (e) {
     e.preventDefault();
     var text = pesan.value.trim() || 'Halo Nara, saya mau ngobrol dulu soal keuangan keluarga.';
@@ -140,10 +140,10 @@
   $('#copy').addEventListener('click', function () {
     var text = $('#preview-text').textContent;
     var status = $('#copy-status');
-    function manual() { pesan.focus(); pesan.select(); status.textContent = 'Pilih lalu salin teksnya secara manual.'; }
+    function manual() { pesan.focus(); pesan.select(); status.textContent = 'Tombol salin tidak bisa dipakai di sini. Silakan blok teksnya, lalu salin sendiri.'; }
     try {
       navigator.clipboard.writeText(text).then(function () {
-        status.textContent = 'Pesan disalin. Tidak ada yang terkirim.';
+        status.textContent = 'Pesan sudah disalin. Tidak ada yang terkirim.';
       }, manual);
     } catch (err) { manual(); }
   });

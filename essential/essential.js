@@ -3,8 +3,9 @@
   'use strict';
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slice = function (list) { return Array.prototype.slice.call(list); };
 
-  /* Page-load moment: the hero note draws in once, ~600ms after load. */
+  /* Page-load moment: the hero note draws in once, about 600ms after load. */
   var heroNote = document.getElementById('hero-note');
   if (heroNote) {
     if (reduceMotion) {
@@ -15,72 +16,71 @@
     }
   }
 
-  /* Interaction 1: the table still life. */
-  var meja = document.getElementById('meja');
-  if (meja) {
-    var markerGroup = meja.querySelector('.markers');
-    var listGroup = meja.querySelector('.meja__list');
-    var notes = Array.prototype.slice.call(meja.querySelectorAll('.tnote'));
-    var groups = [markerGroup, listGroup];
-    var current = 0;
+  /* The four envelopes, keyed by the block ids in #kerja. Titles match the form topics. */
+  var envelopes = {
+    sakit: 'Kalau ada yang sakit',
+    penghasilan: 'Kalau penghasilan berhenti',
+    sekolah: 'Sekolah anak',
+    darurat: 'Dana darurat'
+  };
 
-    markerGroup.hidden = false;
-    listGroup.hidden = false;
+  /* First match wins (05-essential-v2, Tanya). */
+  var firstEnvelope = function (a) {
+    if (a[2] === 'Belum ada' || a[2] === 'Ada, tapi tipis') return 'darurat';
+    if (a[2] === 'Ada asuransi dari kantor') return 'sakit';
+    if (a[0] === 'Ada anak') return 'sekolah';
+    if (a[0] === 'Saya dan pasangan' || a[0] === 'Ada orang tua juga') return 'penghasilan';
+    return 'sakit';
+  };
 
-    var buttonsIn = function (group) {
-      return Array.prototype.slice.call(group.querySelectorAll('button[data-item]'));
-    };
-
-    var select = function (index) {
-      current = index;
-      groups.forEach(function (group) {
-        buttonsIn(group).forEach(function (btn) {
-          var on = Number(btn.getAttribute('data-item')) === index;
-          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-          btn.tabIndex = on ? 0 : -1;
-        });
-      });
-      notes.forEach(function (note) {
-        note.hidden = Number(note.getAttribute('data-item')) !== index;
-      });
-    };
-
-    groups.forEach(function (group) {
-      group.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-item]');
-        if (btn) select(Number(btn.getAttribute('data-item')));
-      });
-      group.addEventListener('keydown', function (e) {
-        var keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: 'first', End: 'last' };
-        if (!(e.key in keys)) return;
-        e.preventDefault();
-        var count = notes.length;
-        var step = keys[e.key];
-        var next = step === 'first' ? 0 : step === 'last' ? count - 1 : (current + step + count) % count;
-        select(next);
-        var target = group.querySelector('button[data-item="' + next + '"]');
-        if (target) target.focus();
-      });
-    });
-
-    select(0);
-  }
-
-  /* Interaction 2: three questions, Nara answers in the margin. */
+  /* Three questions, Nara answers under each. */
   var form = document.getElementById('tanya-form');
   var answers = ['', '', ''];
   var answerLabels = [
-    'Yang makan dari penghasilan saya',
-    'Waktu gajian, uangnya mampir dulu ke',
-    'Amplop Jaga-jaga di rumah'
+    'Yang hidup dari penghasilan saya',
+    'Waktu gajian, uang saya mampir dulu ke',
+    'Amplop Jaga-jaga di rumah saya'
   ];
 
   if (form) {
-    var fieldsets = Array.prototype.slice.call(form.querySelectorAll('.q'));
+    var fieldsets = slice(form.querySelectorAll('.q'));
     var end = form.querySelector('.tanya__end');
     var hint = document.getElementById('tanya-hint');
-    var done = document.getElementById('tanya-done');
+    var doneLine = document.getElementById('tanya-doneline');
+    var result = document.getElementById('tanya-result');
+    var bawa = document.getElementById('bawa');
+    var shownKey = '';
     end.hidden = false;
+
+    /* Reserve room for the longest reply of each question at the current width,
+       so answering never pushes the next question down. */
+    var reserve = function () {
+      fieldsets.forEach(function (fs) {
+        var reply = fs.querySelector('.reply');
+        var probe = reply.cloneNode(false);
+        probe.removeAttribute('aria-live');
+        probe.setAttribute('aria-hidden', 'true');
+        probe.style.cssText = 'position:absolute;visibility:hidden;left:0;top:0;min-height:0;width:' + reply.clientWidth + 'px';
+        fs.appendChild(probe);
+        var tallest = 0;
+        slice(fs.querySelectorAll('input[data-reply]')).forEach(function (input) {
+          probe.textContent = input.getAttribute('data-reply');
+          tallest = Math.max(tallest, probe.offsetHeight);
+        });
+        fs.removeChild(probe);
+        reply.style.minHeight = Math.ceil(window.innerWidth < 700 ? Math.min(tallest, 72) : tallest) + 'px';
+      });
+    };
+    reserve();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
+    var resizeTimer;
+    var lastWidth = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(reserve, 120);
+    });
 
     var refresh = function () {
       fieldsets.forEach(function (fs, i) {
@@ -88,7 +88,19 @@
       });
       var all = answers.every(Boolean);
       hint.hidden = all;
-      done.hidden = !all;
+      doneLine.hidden = !all;
+      bawa.hidden = !all;
+      if (!all) { result.textContent = ''; shownKey = ''; return; }
+      var key = firstEnvelope(answers);
+      if (key === shownKey) return;
+      shownKey = key;
+      result.textContent = '';
+      result.appendChild(document.createTextNode('Dari jawabanmu, amplop yang mungkin kita buka lebih dulu: '));
+      var link = document.createElement('a');
+      link.href = '#amplop-' + key;
+      link.textContent = envelopes[key];
+      result.appendChild(link);
+      result.appendChild(document.createTextNode('.'));
     };
 
     fieldsets.forEach(function (fs, i) {
@@ -121,8 +133,8 @@
 
     var topicPhrase = {
       'Belum tahu, mau ngobrol dulu': 'keuangan keluarga',
-      'Kalau ada yang sakit': 'persiapan kalau ada yang sakit',
-      'Penghasilan keluarga': 'penghasilan keluarga',
+      'Kalau ada yang sakit': 'persiapan biaya kalau ada yang sakit',
+      'Kalau penghasilan berhenti': 'persiapan kalau penghasilan keluarga berhenti',
       'Sekolah anak': 'biaya sekolah anak',
       'Dana darurat': 'dana darurat'
     };
@@ -145,14 +157,17 @@
     topik.addEventListener('change', recompose);
     pesan.addEventListener('input', function () { edited = pesan.value.trim() !== ''; });
 
-    var bawa = document.getElementById('bawa');
-    if (bawa) {
-      bawa.addEventListener('click', function () {
+    var bawaBtn = document.getElementById('bawa');
+    if (bawaBtn) {
+      bawaBtn.addEventListener('click', function () {
+        if (!answers.every(Boolean)) return;
         includeAnswers = true;
         edited = false;
+        topik.value = envelopes[firstEnvelope(answers)];
         pesan.value = compose();
-        var section = document.getElementById('ngobrol');
-        section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        pesan.style.height = 'auto';
+        pesan.style.height = (pesan.scrollHeight + 4) + 'px';
+        contact.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         pesan.focus({ preventScroll: true });
       });
     }
@@ -164,7 +179,7 @@
 
       var label = document.createElement('p');
       label.className = 'preview__label';
-      label.textContent = 'Pratinjau pesan. Belum terkirim ke mana pun.';
+      label.textContent = 'Begini pesanmu nanti. Belum ada yang terkirim.';
 
       var bubble = document.createElement('p');
       bubble.className = 'bubble';
@@ -198,7 +213,7 @@
           sel.removeAllRanges();
           sel.addRange(range);
         } catch (err) { /* selection unavailable */ }
-        status.textContent = 'Pilih lalu salin teksnya secara manual.';
+        status.textContent = 'Tombol salin tidak bisa dipakai di sini. Silakan blok teksnya, lalu salin sendiri.';
       };
 
       copyBtn.addEventListener('click', function () {
@@ -207,7 +222,7 @@
           if (!navigator.clipboard || !navigator.clipboard.writeText) { manual(); return; }
           navigator.clipboard.writeText(text).then(function () {
             copyBtn.textContent = 'Pesan disalin';
-            status.textContent = 'Pesan disalin. Tidak ada yang terkirim.';
+            status.textContent = 'Pesan sudah disalin. Tidak ada yang terkirim.';
             clearTimeout(resetTimer);
             resetTimer = setTimeout(function () { copyBtn.textContent = 'Salin pesan'; }, 3000);
           }, manual);
