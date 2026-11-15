@@ -1,0 +1,9 @@
+/* Self-hosted fonts, all SIL Open Font License 1.1: Gloock, Hanken Grotesk, Nanum Pen Script, Schibsted Grotesk. Latin subset. */
+@font-face{font-family:"Gloock";font-style:normal;font-weight:400;font-display:swap;src:url("gloock-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url("hanken-grotesk-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url("hanken-grotesk-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:600;font-display:swap;src:url("hanken-grotesk-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Nanum Pen Script";font-style:normal;font-weight:400;font-display:swap;src:url("nanum-pen-script-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url("schibsted-grotesk-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url("schibsted-grotesk-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url("schibsted-grotesk-latin-700-normal.woff2") format("woff2")}

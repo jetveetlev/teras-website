@@ -1,0 +1,202 @@
+/* Teras brochure. Two A4 sheets; on screen they sit on a grey desk. */
+:root {
+  --paper: #FFFFFF;
+  --desk: #F3F1EE;
+  --ink: #1C1B1A;
+  --soft: #5E5A55;
+  --line: #E6E2DC;
+  --blue: #2B3FA8;
+  --ox: #4A1526;
+  --blush: #F2DDE0;
+  --cream: #FFF9F6;
+  --rose: #D9A5AE;
+  --display: "Gloock", "Times New Roman", serif;
+  --body: "Schibsted Grotesk", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--desk); color: var(--ink);
+  font: 400 1rem/1.55 var(--body);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+h1, h2, h3, p, ol, figure { margin: 0; }
+img { display: block; width: 100%; height: auto; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+.skip {
+  position: absolute; left: 12px; top: -80px; z-index: 10;
+  background: var(--ink); color: var(--paper); padding: 12px 16px; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* ---------- toolbar (screen only) ---------- */
+.toolbar {
+  max-width: 210mm; margin: 0 auto; padding: 20px 0 18px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px;
+  font-size: .9375rem;
+}
+.toolbar a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.toolbar p { color: var(--soft); flex: 1 1 22rem; }
+@media (hover: hover) { .toolbar a:hover { text-decoration-thickness: 2px; } }
+
+main { padding-bottom: 48px; }
+
+/* ---------- sheet: fixed A4 on screen and in print ---------- */
+.sheet {
+  width: 210mm; height: 297mm; margin: 0 auto 28px;
+  background: var(--paper); border: 1px solid var(--line);
+  overflow: hidden; position: relative;
+  font-size: 10.5pt; line-height: 1.5;
+}
+
+.brand { font-family: var(--display); font-size: 15pt; line-height: 1; }
+
+/* sheet 1 */
+.sheet--cover { display: grid; grid-template-columns: 78mm 1fr; }
+.cover__band {
+  background: var(--ox); color: var(--blush);
+  padding: 16mm 10mm 16mm 13mm;
+  display: flex; flex-direction: column;
+}
+.cover__band h1 {
+  margin-top: 52mm;
+  font-family: var(--display); font-weight: 400;
+  font-size: 44pt; line-height: 1; letter-spacing: -.02em;
+  color: var(--blush);
+}
+.cover__sub { margin-top: auto; color: var(--rose); font-size: 11pt; line-height: 1.4; max-width: 46mm; }
+
+.cover__body { padding: 30mm 15mm 14mm 13mm; display: flex; flex-direction: column; }
+.cover__lede {
+  font-family: var(--display); font-size: 19pt; line-height: 1.18; letter-spacing: -.005em;
+  margin-bottom: 7mm;
+}
+.cover__body > p:not(.cover__lede):not(.leadin) { color: var(--ink); max-width: 98mm; }
+.leadin { margin-top: 9mm; font-weight: 700; font-size: 10pt; }
+.seq { list-style: none; padding: 0; margin-top: 3mm; counter-reset: s; max-width: 104mm; }
+.seq li {
+  counter-increment: s; position: relative;
+  padding: 2.6mm 0 2.6mm 10mm; border-top: 1px solid var(--line);
+}
+.seq li:last-child { border-bottom: 1px solid var(--line); }
+.seq li::before {
+  content: counter(s); position: absolute; left: 0; top: 1.6mm;
+  font-family: var(--display); font-size: 15pt; line-height: 1.2; color: var(--ox);
+}
+.cover__fig { margin-top: auto; margin-right: -15mm; }
+.crop { height: 62mm; overflow: hidden; border: 1px solid var(--line); border-right: 0; }
+.crop img { width: 118%; max-width: none; height: auto; }
+.cover__fig figcaption { margin-top: 2.5mm; font-size: 8.5pt; color: var(--soft); }
+
+/* sheet 2 */
+.sheet--paket { display: flex; flex-direction: column; }
+.paket__head { padding: 0 15mm; }
+.paket__head .brand {
+  margin: 0 -15mm; padding: 5mm 15mm; background: var(--ox); color: var(--blush);
+  font-size: 13pt;
+}
+.paket__head h2 {
+  margin-top: 13mm;
+  font-family: var(--display); font-weight: 400; font-size: 32pt; line-height: 1.02; letter-spacing: -.015em;
+  max-width: 120mm;
+}
+.pkgs {
+  margin: 11mm 15mm 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto); column-gap: 0;
+}
+.pkg {
+  grid-row: span 6; display: grid; grid-template-rows: subgrid; align-content: start;
+  padding: 4mm 5mm 0; border-left: 1px solid var(--line);
+}
+.pkg:first-child { border-left: 0; padding-left: 0; }
+.pkg:last-child { padding-right: 0; }
+.pkg h3 {
+  font-family: var(--display); font-weight: 400; font-size: 18pt; line-height: 1.05;
+  padding-top: 3mm; border-top: 2.5pt solid var(--ink);
+}
+.pkg--ess h3 { border-top-color: var(--blue); color: var(--blue); }
+.pkg--sig h3 { border-top-color: var(--ox); color: var(--ox); }
+.pkg--pre h3 { border-top: 1pt dashed var(--soft); padding-top: calc(3mm + 1.5pt); }
+.pkg__price { margin-top: 1.5mm; font-weight: 500; font-size: 11pt; }
+.pkg--pre .pkg__price { color: var(--soft); }
+.pkg__what { margin-top: 4mm; font-weight: 500; }
+.pkg__ex { margin-top: 3mm; color: var(--soft); font-size: 9.5pt; }
+.pkg__fit { margin-top: 3mm; padding-top: 3mm; border-top: 1px solid var(--line); font-size: 9.5pt; }
+.pkg__shot {
+  margin-top: 6mm; width: 38mm; height: 60mm; overflow: hidden;
+  border: 1px solid var(--line);
+}
+.pkg__shot img { width: 100%; height: auto; }
+
+.paket__foot { margin-top: auto; padding: 0 15mm 13mm; }
+.closing { font-family: var(--display); font-size: 17pt; line-height: 1.2; max-width: 120mm; }
+.placeholder {
+  margin-top: 5mm; padding: 4mm 5mm; border: 1px dashed var(--soft); border-radius: 2px;
+  color: var(--soft); font-size: 9.5pt; max-width: 120mm;
+}
+.footnote { margin-top: 7mm; padding-top: 3mm; border-top: 1px solid var(--line); font-size: 8pt; color: var(--soft); max-width: 150mm; }
+
+/* screens a little narrower than A4: shrink the whole sheet uniformly */
+@media screen and (min-width: 700px) and (max-width: 860px) {
+  .sheet, .toolbar { zoom: .86; }
+}
+
+/* narrow screens: reflow to one readable column */
+@media screen and (max-width: 699px) {
+  .toolbar { padding: 14px 20px; }
+  main { padding: 0 12px 32px; }
+  .sheet { width: auto; height: auto; font-size: 1rem; margin-bottom: 16px; }
+  .brand { font-size: 1.25rem; }
+  .sheet--cover { display: block; }
+  .cover__band { padding: 24px 20px 28px; }
+  .cover__band h1 { margin-top: 40px; font-size: clamp(2.75rem, 13vw, 3.5rem); }
+  .cover__sub { margin-top: 24px; font-size: 1rem; max-width: none; }
+  .cover__body { padding: 28px 20px 24px; }
+  .cover__lede { font-size: 1.5rem; margin-bottom: 18px; }
+  .leadin { margin-top: 28px; font-size: .9375rem; }
+  .seq { margin-top: 8px; }
+  .seq li { padding: 10px 0 10px 32px; }
+  .seq li::before { top: 6px; font-size: 1.25rem; }
+  .cover__fig { margin: 28px -20px 0 0; }
+  .crop { height: auto; aspect-ratio: 16 / 10; }
+  .crop img { width: 160%; height: auto; }
+  .cover__fig figcaption { font-size: .8125rem; margin-top: 8px; }
+
+  .paket__head { padding: 0 20px; }
+  .paket__head .brand { margin: 0 -20px; padding: 14px 20px; font-size: 1.125rem; }
+  .paket__head h2 { margin-top: 28px; font-size: 2.125rem; }
+  .pkgs { margin: 24px 20px 0; display: block; }
+  .pkg { display: block; padding: 0 0 28px; border-left: 0; }
+  .pkg h3 { font-size: 1.75rem; padding-top: 12px; }
+  .pkg--pre h3 { padding-top: 14px; }
+  .pkg__price { font-size: 1.0625rem; margin-top: 4px; }
+  .pkg__what { margin-top: 12px; }
+  .pkg__ex, .pkg__fit { font-size: .9375rem; margin-top: 10px; }
+  .pkg__fit { padding-top: 10px; }
+  .pkg__shot { margin-top: 18px; width: 52%; height: auto; aspect-ratio: 5 / 8; }
+  .paket__foot { padding: 8px 20px 24px; }
+  .closing { font-size: 1.375rem; }
+  .placeholder { margin-top: 16px; padding: 14px 16px; font-size: .9375rem; }
+  .footnote { margin-top: 20px; padding-top: 12px; font-size: .8125rem; }
+}
+
+/* ---------- print ---------- */
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: var(--paper); }
+  .toolbar, .skip { display: none !important; }
+  main { padding: 0; }
+  .sheet {
+    margin: 0; border: 0; zoom: 1;
+    width: 210mm; height: 296.5mm;
+    break-after: page; page-break-after: always;
+  }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+}
+
+h1, h2 { text-wrap: balance; }
