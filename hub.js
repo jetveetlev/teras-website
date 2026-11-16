@@ -62,3 +62,15 @@
   wrap.parentNode.insertBefore(stack, wrap.nextSibling);
   section.classList.add('has-stack');
 })();
+
+/* Pause control for the opening reel (motion longer than 5 seconds). */
+(function () {
+  var reel = document.querySelector('.reel');
+  var btn = reel && reel.querySelector('.reel__pause');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var paused = reel.classList.toggle('is-paused');
+    btn.setAttribute('aria-pressed', String(paused));
+    btn.textContent = paused ? 'Putar animasi' : 'Jeda animasi';
+  });
+})();
