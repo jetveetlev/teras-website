@@ -61,10 +61,10 @@
       li.classList.toggle('is-new', show && key === changed);
     });
     sum.textContent = on.length === 1
-      ? 'Meja untuk satu orang memang paling sederhana, dan justru karena itu paling sering ditunda.'
+      ? 'Satu amplop sudah cukup untuk mulai. Meja untuk satu orang memang paling sederhana, dan justru karena itu sering ditunda.'
       : on.length <= 3
-        ? 'Mejamu mulai ramai. Biasanya di tahap inilah orang mulai bertanya-tanya apakah persiapannya sudah cukup.'
-        : 'Mejamu cukup ramai, jadi kita bahas pelan-pelan, satu orang dulu baru yang berikutnya.';
+        ? 'Mejamu mulai ramai, jadi amplopnya ikut bertambah. Tenang saja, semuanya tidak perlu disiapkan sekaligus.'
+        : 'Amplopnya cukup banyak. Waktu ngobrol nanti, kita urutkan bersama mana yang paling mendesak.';
     $('#save-status').textContent = '';
   }
   boxes.forEach(function (b) { b.addEventListener('change', function () { renderTable(b.getAttribute('data-seat')); }); });
@@ -87,8 +87,8 @@
       msg += others.length
         ? ' Yang duduk di meja saya: saya, ' + joinId(others) + '.'
         : ' Untuk sekarang, saya masih sendiri di meja ini.';
-      var qs = $$('#notes li').filter(function (li) { return !li.hidden; }).map(function (li) { return '- ' + li.textContent; });
-      msg += '\n\nPertanyaan yang Nara catat untuk meja saya:\n' + qs.join('\n');
+      var envs = $$('#notes li').filter(function (li) { return !li.hidden; }).map(function (li) { return $('.lbl', li).textContent; });
+      msg += ' Amplop yang ingin saya bahas: ' + joinId(envs) + '.';
     }
     pesan.value = msg;
   }
@@ -101,7 +101,7 @@
     line.textContent = 'Mejamu sudah saya catat: kamu' + (others.length ? ', ' + joinId(others) : ' sendiri') + '.';
     line.hidden = false;
     touched = false; composeMsg();
-    $('#save-status').innerHTML = 'Sudah saya simpan. Catatan ini akan ikut masuk ke <a href="#kursi">pesan di bagian terakhir</a>.';
+    $('#save-status').innerHTML = 'Sudah saya simpan. Daftar amplop ini ikut masuk ke <a href="#kursi">pesan di bagian terakhir</a>.';
   });
 
   /* ---------- tiga meja (tabs) ---------- */
