@@ -133,8 +133,8 @@ main { padding-bottom: 48px; }
 }
 .pkg__shot img { width: 100%; height: auto; }
 
-.paket__foot { margin-top: auto; padding: 0 15mm 13mm; }
-.closing { font-family: var(--display); font-size: 17pt; line-height: 1.2; max-width: 120mm; }
+.paket__foot { margin-top: auto; padding: 7mm 15mm 13mm; }
+.closing { font-family: var(--display); font-size: 14pt; line-height: 1.25; max-width: 130mm; }
 .placeholder {
   margin-top: 5mm; padding: 4mm 5mm; border: 1px dashed var(--soft); border-radius: 2px;
   color: var(--soft); font-size: 9.5pt; max-width: 120mm;
@@ -200,3 +200,5 @@ main { padding-bottom: 48px; }
 }
 
 h1, h2 { text-wrap: balance; }
+
+.seq li b { font-weight: 700; }
